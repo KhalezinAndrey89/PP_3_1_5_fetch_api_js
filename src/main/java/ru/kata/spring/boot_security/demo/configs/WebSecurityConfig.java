@@ -21,7 +21,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetails = userDetails;
     }
 
-
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -33,9 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
-                .and()
-                .formLogin().successHandler(successUserHandler)
-                .permitAll()
+                .and().formLogin()
+                .successHandler(successUserHandler).permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/login")
                 .permitAll();

@@ -6,33 +6,52 @@
 </head>
 <body>
 <h2>Users</h2>
-<form th:action="@{'/add'}">
-    <input type="submit" value="Create"/>
-</form>
-<br>
 <br>
 <table>
     <tr>
+        <td>
+            <form th:action="@{'/admin/add/'}">
+                <input type="submit" value="Create"/>
+            </form>
+            <br>
+            <form th:action="@{/logout}">
+                <input type="submit" value="Logout"/>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
         <td>UserId</td>
         <td>Name</td>
         <td>Surname</td>
         <td>Email</td>
+        <td>Roles</td>
     </tr>
     <tr th:each="user: ${users}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.name}"></td>
-        <td th:text="${user.surname}"></td>
-        <td th:text="${user.email}"></td>
         <td>
-            <form th:action="@{'edit/' + ${user.id}}">
+            <form th:action="@{'/admin/userPage/' + ${user.id}}">
+                <input type="submit" value="User page"/>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{'/admin/edit/' + ${user.id}}">
                 <input type="submit" value="Edit"/>
             </form>
         </td>
         <td>
-            <form th:method="DELETE" th:action="@{'delete/' + ${user.id}}">
+            <form th:method="DELETE" th:action="@{'/admin/delete/' + ${user.id}}">
                 <input type="submit" value="Delete"/>
             </form>
         </td>
+        <td></td>
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.surname}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:each="role: ${user.getRoles()}" th:text="${role.getName()}"></td>
     </tr>
 </table>
 </body>

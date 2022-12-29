@@ -4,49 +4,54 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 public class AdminController {
     private final UserService userService;
+    private final RoleService roleService;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/admin/userPage/{id}")
     public String showUserPage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
+        model.addAttribute("user", userService.getUserById(id));
         return "user";
     }
 
-    @GetMapping("/")
+    @GetMapping("/admin")
     public String showAllUsersPage(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/admin/add")
     public String showUserCreationPage(Model model) {
         model.addAttribute("user", new User());
-        return "add";
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "addEdit";
     }
 
-    @PostMapping("/save")
-    public String saveNewUser(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
-        return "redirect:/";
-    }
-
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/edit/{id}")
     public String showUserEditPage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        return "update";
+        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "addEdit";
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/admin/save")
+    public String saveUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/delete/{id}")
     public String deleteCurrentUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 }

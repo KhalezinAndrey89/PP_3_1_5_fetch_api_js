@@ -33,19 +33,25 @@ public class AdminController {
     public String showUserCreationPage(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getAllRoles());
-        return "addEdit";
+        return "add";
     }
 
     @GetMapping("/admin/edit/{id}")
     public String showUserEditPage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         model.addAttribute("roles", roleService.getAllRoles());
-        return "addEdit";
+        return "edit";
     }
 
     @PostMapping("/admin/save")
     public String saveUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/update/{id}")
+    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+        userService.updateUser(user, id);
         return "redirect:/admin";
     }
 

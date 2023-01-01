@@ -40,6 +40,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
+    public void updateUser(User user, Long id) {
+        User userUpdate = getUserById(id);
+        userUpdate.setName(user.getName());
+        userUpdate.setSurname(user.getSurname());
+        userUpdate.setPassword(encoder.encode(user.getPassword()));
+        userUpdate.setEmail(user.getEmail());
+        userUpdate.setRoles(user.getRoles());
+        userRepository.save(userUpdate);
+    }
+
+    @Override
+    @Transactional
     public void saveUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -50,6 +62,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
 
     @Override
     @Transactional(readOnly = true)

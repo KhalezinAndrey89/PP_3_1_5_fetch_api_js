@@ -18,13 +18,16 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "name")
-    private String name;
+    private String firstName;
 
     @Column(name = "surname")
-    private String surname;
+    private String lastName;
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "age")
+    private Integer age;
 
     @Column(name = "password")
     private String password;
@@ -39,10 +42,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String surname, String email, String password, List<Role> roles) {
-        this.name = name;
-        this.surname = surname;
+    public User(String firstName, String lastName, String email, Integer age, String password, List<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
+        this.age = age;
         this.password = password;
         this.roles = roles;
     }
@@ -55,20 +59,20 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -77,6 +81,14 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public void setPassword(String password) {
@@ -131,23 +143,23 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(name, user.name)
-                && Objects.equals(surname, user.surname)
-                && Objects.equals(email, user.email);
+        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(age, user.age) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, email);
+        return Objects.hash(id, firstName, lastName, email, age, password, roles);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", age='" + age + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }

@@ -25,10 +25,10 @@ public class Init {
 
     @PostConstruct
     public void postConstruct() {
-        userRepository.save(new User("admin_name", "admin_surname", "admin@email.ru",
+        userRepository.save(new User("admin_name", "admin_surname", "admin@email.ru", 20,
                 encoder.encode("100"), roleRepository.saveAll(List.of(new Role("ROLE_ADMIN")))));
 
-        userRepository.save(new User("user_name", "user_surname", "user@email.ru",
+        userRepository.save(new User("user_name", "user_surname", "user@email.ru", 20,
                 encoder.encode("200"), roleRepository.saveAll(List.of(new Role("ROLE_USER")))));
     }
 }

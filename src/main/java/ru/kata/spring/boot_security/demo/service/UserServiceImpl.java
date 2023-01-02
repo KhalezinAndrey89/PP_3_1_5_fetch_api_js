@@ -42,10 +42,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void updateUser(User user, Long id) {
         User userUpdate = getUserById(id);
-        userUpdate.setName(user.getName());
-        userUpdate.setSurname(user.getSurname());
+        userUpdate.setFirstName(user.getFirstName());
+        userUpdate.setLastName(user.getLastName());
         userUpdate.setPassword(encoder.encode(user.getPassword()));
         userUpdate.setEmail(user.getEmail());
+        userUpdate.setAge(user.getAge());
         userUpdate.setRoles(user.getRoles());
         userRepository.save(userUpdate);
     }

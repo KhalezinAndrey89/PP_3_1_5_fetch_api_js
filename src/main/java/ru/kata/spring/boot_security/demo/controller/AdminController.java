@@ -7,6 +7,8 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
+
 @Controller
 public class AdminController {
     private final UserService userService;
@@ -17,30 +19,13 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/admin/userPage/{id}")
-    public String showUserPage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "user";
-    }
-
     @GetMapping("/admin")
-    public String showAllUsersPage(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+    public String showAllUsersPage(Principal principal, Model model) {
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+        model.addAttribute("addUser", new User());
+        model.addAttribute("allUsers", userService.getAllUsers());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "users";
-    }
-
-    @GetMapping("/admin/add")
-    public String showUserCreationPage(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "add";
-    }
-
-    @GetMapping("/admin/edit/{id}")
-    public String showUserEditPage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "edit";
     }
 
     @PostMapping("/admin/save")
@@ -59,5 +44,11 @@ public class AdminController {
     public String deleteCurrentUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
+    }
+
+    @GetMapping("/adminPage")
+    public String showUser(Principal principal, Model model) {
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+        return "adminPage";
     }
 }

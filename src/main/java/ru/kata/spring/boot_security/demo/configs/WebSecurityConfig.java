@@ -32,11 +32,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
-                .and().formLogin()
-                .successHandler(successUserHandler).permitAll()
                 .and()
-                .logout().logoutSuccessUrl("/login")
-                .permitAll();
+                .formLogin().loginPage("/login").loginProcessingUrl("/login_process")
+                .successHandler(successUserHandler)
+                .permitAll()
+                .and()
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
     }
 
     @Override

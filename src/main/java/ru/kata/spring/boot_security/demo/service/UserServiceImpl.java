@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void updateUser(User user, Long id) {
-        User userUpdate = getUserById(id);
+    public void updateUser(User user) {
+        User userUpdate = getUserById(user.getId());
         userUpdate.setFirstName(user.getFirstName());
         userUpdate.setLastName(user.getLastName());
         userUpdate.setPassword(encoder.encode(user.getPassword()));
